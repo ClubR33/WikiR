@@ -1,0 +1,83 @@
+---
+title: "WikiR"
+author: "ClubR"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  rmdformats::readthedown:
+    self_contained: true
+    thumbnails: true
+    lightbox: true
+    gallery: false
+    highlight: tango
+---
+
+```{r setup, echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+library(rmdformats)
+library(dplyr)
+library(purrr)
+library(ggplot2)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+
+## Introduction
+Le ClubR de Bordeaux partage ses morceaux de codes, astuces, actualités et ressources pour permettre à chacun d'explorer les possibilités offertes par le logiciel R. Ce document n'est pas une formation, il est collaboratif et soumis à des révisions permanentes.
+
+## Manipuler des jeux de données
+
+### Fusionner une liste de data.frames
+
+On ne présente plus le package **dplyr** mais le package **purrr** est moins connu. Il fait partie du **tidyverse** et a été devellopé et est maintenu par la même équipe. Il sert à appliquer une (ou des) fonction(s) à un ensemble d'objets grâce à des fonctions comme map, walk, reduce de manière plus simple et efficace que les *lapply* de base.
+
+```{r, eval = FALSE}
+library(dplyr)
+library(purrr)
+```
+
+On dispose d'une liste de data.frame, comment les fusionner automatiquement ?
+
+(@) on a les noms de data.frames dans un tableau
+
+```{r}
+dflist <- data.frame(df = c("a","b","c"), stringsAsFactors = F)
+```
+
+(@) voici les data.frames, on doit IMPERATIVEMENT avoir une clé de jointure présente dans chaque tableau
+
+```{r}
+a <- data.frame(key = c(1,2,3,4), valA = c("A","B","C","E"))
+b <- data.frame(key = c(2,1,3,4), valB = c("D","E","F","La réponse D"))
+c <- data.frame(key = c(1,2,4,3), valC = c("G","H","I","Bonjour !"))
+```
+
+
+(@) On fusionne l'ensemble:
+
+```{r}
+dflist$df %>% map(~ get(.x)) %>% reduce(inner_join, by = "key")
+```
+
+
+## Liens 
+
+### Packages
+
+#### le tidyverse
+
+##### dplyr
+
+##### purrr
+
+
+
+### Anglais
